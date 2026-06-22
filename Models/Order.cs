@@ -11,7 +11,7 @@ namespace ShopApi.Models
 
         // FK to user
         public int UserId { get; set; }
-        public User User { get; set; }
+        public User? User { get; set; }
 
         public List<OrderItem> Items { get; set; } = new();
     }

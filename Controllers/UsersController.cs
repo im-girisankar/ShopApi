@@ -33,6 +33,17 @@ namespace ShopApi.Controllers
             return CreatedAtAction(nameof(Get), new { id = user.Id }, user);
         }
 
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> Update(int id, [FromBody] User dto)
+        {
+            var u = await _db.Users.FindAsync(id);
+            if (u == null) return NotFound();
+            u.FullName = dto.FullName;
+            u.Email = dto.Email;
+            await _db.SaveChangesAsync();
+            return NoContent();
+        }
+
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {

@@ -18,6 +18,14 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(cs));
 
 var app = builder.Build();
 
+// Apply any pending EF Core migrations on startup so the database schema
+// (and seed data) is created automatically on first run.
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+}
+
 app.MapGet("/ping", () => Results.Ok("pong"));
 
 if (app.Environment.IsDevelopment())
@@ -25,6 +33,8 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
     app.UseSwagger();
     app.UseSwaggerUI();
+    // Open Swagger UI at the root for convenience while learning/exploring.
+    app.MapGet("/", () => Results.Redirect("/swagger"));
 }
 
 app.UseHttpsRedirection();

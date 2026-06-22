@@ -9,10 +9,10 @@ namespace ShopApi.Models
         public int Id { get; set; }
 
         [Required, MaxLength(150)]
-        public string FullName { get; set; }
+        public string FullName { get; set; } = string.Empty;
 
         [Required, MaxLength(150)]
-        public string Email { get; set; }
+        public string Email { get; set; } = string.Empty;
 
         public List<Order> Orders { get; set; } = new();
     }
